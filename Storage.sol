@@ -13,7 +13,7 @@ contract YulStorage {
     uint8 public e=2;
     // end slot 3     
 
-    function getValYul() external pure returns(uint256 r) {
+    function getSlotYul() external pure returns(uint256 r) {
         
         assembly {
 
@@ -28,6 +28,13 @@ contract YulStorage {
             //c.slot is 3
             //d.slot is 3
             //e.slot is 3
+        }
+    }
+
+    function getValYul() external view returns(uint256 r) {
+        assembly {
+            // Returns 99
+            r := sload(val.slot)
         }
     }
 }
