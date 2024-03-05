@@ -47,4 +47,17 @@ function checkTruthy() external pure returns (uint256 result) {
 
         return result; // 88
     }
+
+     function checkNegation() external pure returns (uint256 result) {
+        result = 1;
+
+        assembly {
+            // iszero(0) is true and hence it always get executed
+            if iszero(0) {
+                result := 2
+            }
+        }
+
+        return result; // 2
+    }
 }
