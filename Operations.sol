@@ -60,4 +60,17 @@ function checkTruthy() external pure returns (uint256 result) {
 
         return result; // 2
     }
+
+    function negationUsingNotUnsafe() external pure returns (uint256 result) {
+        result = 1;
+
+        assembly {
+            // Not(0) will be resulting in a truthy state always and hence result is always2
+            if not(0) {
+                result := 2
+            }
+        }
+
+        return result; // 2
+    }
 }
