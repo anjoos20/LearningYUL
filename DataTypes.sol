@@ -42,6 +42,8 @@ contract YulTypes {
     }
 
      function stringType1() external pure returns(string memory) {
+        // We can only handle 32 bytes here. So longer strings doesnt work
+        // Need to find a way around for this
         bytes32 str1 = "";
 
         assembly {
@@ -49,5 +51,15 @@ contract YulTypes {
         }
         // To return as string convert in from bytes32 to string
         return string(abi.encode(str1));
+    }
+
+    function boolType() external pure returns(bool) {
+        bool b;
+
+        assembly {
+            b := 0
+        }
+
+        return b;
     }
 }
