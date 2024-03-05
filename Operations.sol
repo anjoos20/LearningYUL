@@ -83,4 +83,17 @@ function checkTruthy() external pure returns (uint256 result) {
             // And so not(2) will be truthy as well
         }
     }
+
+    function negation2UsingNotUnsafe() external pure returns (uint256 result) {
+        result = 1;
+
+        assembly {
+            if not(2) { // unsafe!
+            // if we use iszero(2) , we get 1 as result!
+                result := 2
+            }
+        }
+
+        return result; // 2
+    }
 }
