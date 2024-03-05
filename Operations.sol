@@ -73,4 +73,14 @@ function checkTruthy() external pure returns (uint256 result) {
 
         return result; // 2
     }
+
+    function notZero() external pure returns (bytes32 r) {
+        assembly {
+            // r:=0 sets it to 0x0000000000000000000000000000000000000000000000000000000000000000
+            // and r:= not(0) sets it to  0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+            r := not(0) 
+
+            // And so not(2) will be truthy as well
+        }
+    }
 }
