@@ -21,4 +21,30 @@ contract YulOperations {
             }
         }
 }
+// checking if something is true or false is different method in Yule because ut only has one datatype, that is byte32
+function checkTruthy() external pure returns (uint256 result) {
+        result = 88;
+
+        assembly {
+            if 99 {
+                // This will always gert executed and the value will change to 99
+                result := 99
+            }
+        }
+
+        return result; // 99
+    }
+
+    function checkFalsy() external pure returns (uint256 result) {
+        result = 88;
+
+        assembly {
+            if 0 {
+                //This will never get execyed and the value will remain 88
+                result := 99
+            }
+        }
+
+        return result; // 88
+    }
 }
