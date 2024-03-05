@@ -35,7 +35,8 @@ contract YulStorage {
         assembly {
             // Returns 99
             r := sload(val.slot)
-        }
+        
     }
 }
 
+}
