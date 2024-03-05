@@ -96,4 +96,16 @@ function checkTruthy() external pure returns (uint256 result) {
 
         return result; // 2
     }
+
+    function getMaximum(uint256 x, uint256 y) external pure returns (uint256 max) {
+        assembly {
+            if gt(x, y) {
+                max := x
+            } 
+            // There is no else statement available in Yule, so need another if
+            if gt(y, x) {
+                max := y
+            } 
+        }
+    }
 }
