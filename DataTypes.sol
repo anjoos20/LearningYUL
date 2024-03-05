@@ -62,4 +62,16 @@ contract YulTypes {
 
         return b;
     }
+
+    function addressType() external pure returns(address) {
+        address addr;
+
+        assembly {
+            // This is a 32 byte length in assembly and we are just setting the last bit
+            addr := 1
+        }
+        // A valid solidity address with the last bit as 1
+        //0x0000000000000000000000000000000000000001
+        return addr;
+    }
 }
