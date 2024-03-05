@@ -24,4 +24,30 @@ contract YulTypes {
         return x;
     }
 
+    //  Actually, this gives an out of gas error
+    // call to YulTypes.stringType errored: Error occurred: out of gas.
+    
+
+
+    function stringType() external pure returns(string memory) {
+        // The string variable here is essentially on the memory heap
+        string memory str = "";
+
+        assembly {
+            // But, here we are setting a ponter on the stack
+            str := "hello"
+        }
+        // To avoid this error, we need to use bytes32 because bytes32 is stored on the stack
+        return str;
+    }
+
+     function stringType1() external pure returns(string memory) {
+        bytes32 str1 = "";
+
+        assembly {
+            str1 := "hello"
+        }
+        // To return as string convert in from bytes32 to string
+        return string(abi.encode(str1));
+    }
 }
