@@ -38,5 +38,10 @@ contract YulStorage {
         
     }
 }
+function getValueBySlotIndex(uint256 slotIndex) external view returns(uint256 ret) {
+        assembly {
+            ret := sload(slotIndex)
+        }
+    }
 
 }
