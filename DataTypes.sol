@@ -14,4 +14,14 @@ contract YulTypes {
         return x;
     }
 
+    function hexType() external pure returns(uint256) {
+        uint256 x;
+
+        assembly {
+            x := 0xc // 12
+        }
+    // Its returned in uint256
+        return x;
+    }
+
 }
