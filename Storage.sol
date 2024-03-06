@@ -70,6 +70,7 @@ function setValueBySlotIndexAndVal(uint256 slotIndex, uint256 newVal) external {
 
      function readSlot3VarC() external view returns (uint256 cval) {
         assembly {
+            // We can get the value by bitwise shifting and masking
             let value := sload(c.slot) // 32 byte increments only
             // 0x0203000500000000000000000000000700000000000000000000000000000009
             // Shift right value by 224 bits
@@ -80,6 +81,30 @@ function setValueBySlotIndexAndVal(uint256 slotIndex, uint256 newVal) external {
             //// 0x000000000000000000000000000000000000000000000000000000000000ffff
             cval := and(0xffff, shifted)
             
+        }
+    }
+
+    function setPacked(uint16 _newValue) public {
+        assembly{
+            // _newValue = 0x000000000000000000000000000000000000000000000000000000000000000a
+
+            let oldValue := sload(c.slot)
+            // oldValue = 0x0203000500000000000000000000000700000000000000000000000000000009
+            // Clear out the old value of C
+            let cleared := and(oldValue, 0xffff0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff)
+            // oldValue =   0x0203000500000000000000000000000700000000000000000000000000000009
+            // mask =       0xffff0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+            // clearedC =   0x0203000000000000000000000000000700000000000000000000000000000009
+
+            let shifted := shl(mul(c.offset, 8), _newValue)
+            // shifted =    0x0000000a00000000000000000000000000000000000000000000000000000000
+
+            let newValue := or(shifted, cleared)
+            // shifted  =   0x0000000a00000000000000000000000000000000000000000000000000000000
+            // clearedC =   0x0203000000000000000000000000000700000000000000000000000000000009
+            // newValue =   0x0203000a00000000000000000000000700000000000000000000000000000009
+
+            sstore(c.slot, newValue)
         }
     }
 
