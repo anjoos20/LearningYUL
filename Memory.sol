@@ -29,10 +29,25 @@ contract YulMemory {
             mstore(0x0, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff)
             // Moves a 1 byte word to memory location 0x1
             mstore(0x0, 0x0) // reset
+            // Even though its just 1 byte, it clears out the whole memory
             // Since it gets only 31 bytes in the first memory, it takes up 1 more byte in the next memory 
             // starting 0x20
             // Check the screenshots of the remix debug
             mstore(0x1, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff)
+            //Because mstore works with 32 bytes, it puts leading zeros infront of 2 i.e 2 prefixed with all zeros           
+            mstore(0x0, 0x2)
+        }
+    }
+// mstore8 only modifies a single byte
+    function mstore8Example() public pure {
+        assembly {
+            
+            mstore(0x0, 0x2)
+            //At 0x0:   0x0000000000000000000000000000000000000000000000000000000000000002
+            mstore8(0x0, 0x7)
+            //At 0x0:  0x0700000000000000000000000000000000000000000000000000000000000002
+            mstore(0x0, 0x7)
+            // AT 0x0: 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
         }
     }
     
