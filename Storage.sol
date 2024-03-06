@@ -68,4 +68,19 @@ function setValueBySlotIndexAndVal(uint256 slotIndex, uint256 newVal) external {
         }
     }
 
+     function readSlot3VarC() external view returns (uint256 cval) {
+        assembly {
+            let value := sload(c.slot) // 32 byte increments only
+            // 0x0203000500000000000000000000000700000000000000000000000000000009
+            // Shift right value by 224 bits
+            let shifted := shr(224, value) // 28 bytes * 8 = 224 bits
+            // 0x0000000000000000000000000000000000000000000000000000000002030005
+            // We are only interested in the last 2 bytes i.e. 0005 and for that 
+            // we can use bit wise AND with 0xffff, which is a 32 byte word with last 2 byes set as 1
+            //// 0x000000000000000000000000000000000000000000000000000000000000ffff
+            cval := and(0xffff, shifted)
+            
+        }
+    }
+
 }
