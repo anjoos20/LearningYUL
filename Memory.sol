@@ -19,7 +19,10 @@ NOTE
 * Only 4 instructions to know: mload, mstore, mstore8 and msize
 */
 
+//import "hardhat/console.sol";
 contract YulMemory {
+
+     uint256[2] arrayInStorage = [10, 11]; // 0xa, 0xb
 //mstore function takes the location that you want to start saving the data in memory from-location 
 // here, from location 0, I am going to save my data which is a s2 byte word 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
     function mstoreExample() public pure {
@@ -50,5 +53,38 @@ contract YulMemory {
             // AT 0x0: 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
         }
     }
-    
+
+     // function demonstrates how solidity automatically 
+    // updates the free memory pointer
+    function freeMemoryPointer() public view {
+        bytes32 ptrStart;
+        bytes32 ptrEnd;
+
+        assembly {
+            ptrStart := mload(0x40)
+        }
+
+        uint256[2] memory arrayInMemory = arrayInStorage; // 64 bytes
+        arrayInMemory[0]; // hides compiler warning
+
+        assembly {
+            ptrEnd := mload(0x40)
+        }
+
+        //logHelper("ptr (start)", ptrStart, "");
+        //logHelper("ptr (end)", ptrEnd, "");
+    }
+
+    // function logHelper(string memory message, bytes32 value1, bytes32 value2) internal pure {
+    //     console.log(message);
+    //     console.logBytes(abi.encode(value1));
+    //     console.logBytes(abi.encode(value2));
+    // }
+    //output in remix 
+    //ptr (start)
+    //0x0000000000000000000000000000000000000000000000000000000000000080
+    //0x0000000000000000000000000000000000000000000000000000000000000000
+    //ptr (end)
+    //0x00000000000000000000000000000000000000000000000000000000000000c0
+    //0x0000000000000000000000000000000000000000000000000000000000000000
 }
